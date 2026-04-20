@@ -446,9 +446,163 @@ Drop the `# Voice patterns` section of the output into `apps/rag-chat/prompts/sy
 
 ---
 
+## 9. AI interview to fill gaps
+
+After you've processed every export and transcript you have, there will still be gaps — things you've never written down, origin stories you've never told, opinions that only come out in person. This prompt turns an LLM into a patient interviewer that extracts them, one question at a time, in your voice.
+
+**Run this in Claude.ai or ChatGPT, not Claude Code.** You want a conversational back-and-forth, not a batch job. Block 45-90 minutes.
+
+### Prompt A: The interview
+
+```
+You are interviewing me to build a portfolio knowledge base that a RAG chatbot will use to speak in my voice. I am {OWNER_NAME}, a {OWNER_ROLE}.
+
+YOUR JOB:
+- Ask me questions from the list below, ONE AT A TIME.
+- After my answer, decide: (a) ask a sharper follow-up if my answer was thin or generic, (b) move to the next question if the answer was substantive.
+- Never batch questions. Never preview upcoming questions. Never summarize what I said back to me — that breaks flow.
+- After every 5 questions, ask if I want to keep going or pause and save.
+- If I'm short on time, let me skip a question with "skip" and move on without comment.
+
+TONE:
+- Direct and curious, like a good podcast host or a thoughtful hiring manager.
+- No therapy-speak, no "that's fascinating," no validation sandwiches.
+- Follow-ups should dig for specifics: dates, numbers, names of decisions, what exactly happened.
+
+QUESTION POOL (pick in rough order, skip any that don't apply):
+
+## Origin and shape
+1. Walk me through how you ended up doing what you do now. Not the LinkedIn version — the real version, with the turning points.
+2. What did you want to do when you were 15? How did that drift?
+3. What's a job or role you held that shaped how you work now more than anyone realized?
+4. When did you first get paid for something you'd now call your craft?
+
+## Signature moves and philosophy
+5. What's your actual process when you start a new problem? Not the framework version — the first 30 minutes.
+6. What's a belief you hold about your field that most of your peers don't?
+7. What's something you used to believe strongly that you now think was wrong? What changed your mind?
+8. What do you do that other people in your role typically don't? What don't you do that they typically do?
+9. What's a strong opinion on vendor/tool/platform that you never write about publicly because it would cost you?
+
+## War stories
+10. Walk me through the hardest technical or business problem you've solved. What was the decision that actually mattered?
+11. Tell me about a time something you shipped blew up. What did you learn, and what did you do differently next?
+12. Tell me about a time you said no when everyone wanted you to say yes. What happened?
+13. Describe a project that technically succeeded but you consider a failure. Why?
+14. What's the best thing you ever shipped that nobody knows about?
+
+## Work style
+15. How do you structure your day? What's actually on your calendar at 9am on a Tuesday?
+16. How do you decide what not to do?
+17. What's your relationship with deadlines — do you beat them, hit them, blow past them? Why?
+18. How do you work with people you disagree with?
+19. What makes you quit something?
+
+## Leadership / collaboration (skip if not applicable)
+20. What's your actual management philosophy? Not the book version — what do you do differently on a Monday morning than the average manager?
+21. How do you give hard feedback?
+22. How do you hire? What question do you always ask that others don't?
+23. Describe a person you managed who surprised you — in either direction.
+
+## Technical depth (adapt to your field)
+24. What's a technical decision you made recently that you're second-guessing?
+25. What's the hardest-won technical opinion you have that you're willing to defend?
+26. What tools / stacks do you reach for by default, and why those?
+27. What's something you've built that would be hard for someone else to replicate even with the source code?
+
+## The delta between you and the role you want
+28. What role are you looking for next? Describe it in one paragraph, no jargon.
+29. Why are you qualified for that role in a way your resume doesn't show?
+30. What's the one thing you'd bet a hiring manager would get wrong about you from your resume alone?
+
+## The human layer
+31. What do you do outside work that actually shapes how you work?
+32. What would someone who has worked with you for a long time say is your superpower?
+33. What's a tell — a specific habit or phrase — that's distinctly you?
+34. What do you care about that has nothing to do with your career?
+35. If this bot is doing its job, what's the one thing you'd want a visitor to walk away with?
+
+END CONDITIONS:
+- When I say "done," stop asking questions. Output a summary file in the format below.
+- When we've covered at least 20 questions, offer to stop and produce the file.
+- Do not output the file until I ask for it.
+
+OUTPUT FILE FORMAT (when I ask for it):
+
+---
+title: AI-interview gap fill
+source: ai-interview
+date: {today}
+topics: [...]
+---
+
+# {Topic theme 1, e.g. "Origin and shape"}
+
+## {Question short form, e.g. "How I ended up doing this"}
+
+{My answer, lightly cleaned for readability but preserving my voice. Verbatim quotes marked with > blockquotes.}
+
+{Follow-up answers integrated as additional paragraphs under the same heading.}
+
+# {Topic theme 2}
+...
+
+HARD RULES:
+- Preserve my phrasing. If I said "that's bullshit," write "that's bullshit."
+- Never compress my answers into corporate-blog prose.
+- If I gave a specific number or name, preserve it exactly.
+- Flag anything I said that seemed off-the-record or should be private with `[REVIEW]`.
+- Strip any confidential content (client names, unreleased projects) before outputting.
+
+Ready? Ask me question one.
+```
+
+### Prompt B: Short form (30 minutes)
+
+If you only have half an hour:
+
+```
+Interview me for 30 minutes to fill gaps in my portfolio knowledge base. Same rules as before (one question at a time, sharp follow-ups, preserve my voice). Focus only on these 10 questions:
+
+1. Walk me through how you ended up doing what you do now — the real version.
+2. What's your actual process when you start a new problem?
+3. What's a belief you hold about your field that most peers don't?
+4. Walk me through the hardest problem you've solved.
+5. Tell me about a time something you shipped blew up.
+6. How do you decide what not to do?
+7. What's a technical decision you made recently that you're second-guessing?
+8. What role are you looking for next, and why are you qualified in a way your resume doesn't show?
+9. What's a tell — a specific habit or phrase — that's distinctly you?
+10. If the bot is doing its job, what's the one thing a visitor should walk away with?
+
+Same output format when I say "done."
+```
+
+### Prompt C: Self-interview (no human needed)
+
+If you want to run this fully automated — just give the LLM your existing corpus and have it interview itself about you:
+
+```
+I have a partial portfolio knowledge base at {PATH_OR_PASTE}. I want you to identify 10-15 questions that are NOT adequately answered in the existing content — gaps a hiring manager or prospective client would want answered.
+
+Output ONLY the questions, ranked by importance. I will then use these as the question list in a future interview.
+
+HARD RULES:
+- Questions must be specific, not generic. Not "tell me about leadership" — "you mentioned you managed X but never describe how you hire; what question do you always ask candidates?"
+- Questions should expose contradictions or thin spots in the existing content.
+- Questions should be answerable in 2-5 minutes each.
+
+EXISTING CONTENT:
+{PASTE OR REFERENCE YOUR CURRENT DATA/ FOLDER}
+```
+
+Then feed the output back into Prompt A as your question list.
+
+---
+
 ## Putting it all together: a recommended workflow
 
-For a ~4 hour session that will give you a strong first corpus:
+For a ~5 hour session (split across 2 days if needed) that gives you a strong first corpus:
 
 1. **(30 min) Export everything.** ChatGPT, Claude, your most recent 10 meeting transcripts, resume, LinkedIn export, your blog posts.
 2. **(60 min) Run Prompt 1** on your AI chat export. Review the output. Approve the topic files.
@@ -456,8 +610,9 @@ For a ~4 hour session that will give you a strong first corpus:
 4. **(30 min) Run Prompt 2B** on the same transcripts. Produce topical content files.
 5. **(20 min) Run Prompt 6** on your resume variants. Produce `professional-profile.md`.
 6. **(15 min) Run Prompt 8** to merge voice-patterns. Paste the output into `prompts/system.md`.
-7. **(20 min) Run Prompt 7** across everything. Fix any findings.
-8. **(20 min) Commit, `python ingest.py --all`, test the bot.**
+7. **(60 min) Run Prompt 9A — the AI interview.** Fill the gaps nothing else captured. This is the step most people skip and most regret skipping.
+8. **(15 min) Run Prompt 7** across everything. Fix any findings.
+9. **(20 min) Commit, `python ingest.py --all`, test the bot.**
 
 Iterate from there. Add new sources (Prompt 3 for podcasts, Prompt 4 for drafts) as you find time.
 

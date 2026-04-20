@@ -2,6 +2,8 @@
 
 A reusable template for an **interactive AI portfolio**: a static site plus a RAG chatbot grounded on your own content. Visitors land on your page and have a real conversation with an AI trained on your background, projects, and writing. It's the portfolio, the demo, and the proof of work in one artifact.
 
+> **New here? Start with [`WALKTHROUGH.md`](WALKTHROUGH.md)** — a linear, end-to-end guide from clone to deployed, including gathering raw sources, processing them with ready-to-paste agent prompts, running an AI interview to fill gaps, and shipping to production.
+
 ## What's here
 
 | Path | What it is |
