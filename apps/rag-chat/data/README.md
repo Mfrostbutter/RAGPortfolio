@@ -43,3 +43,7 @@ Frontmatter is parsed and stored as chunk metadata. You can filter on it at retr
 ## What's already here
 
 [`example/bio.md`](example/bio.md) and [`example/project-example.md`](example/project-example.md) are starter templates. Replace them with your own content, or use them as scaffolding and delete the originals when you're done.
+
+## Where to find content to ingest
+
+See [`SOURCE-IDEAS.md`](SOURCE-IDEAS.md) for a curated list of knowledge sources — ChatGPT / Claude exports, meeting transcripts, voice memos, draft essays, and unfiltered text streams that capture how you actually communicate. The bot is only as good as the corpus behind it.
