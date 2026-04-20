@@ -1,0 +1,15 @@
+# public_kb  = the collection that powers the public chat
+# private_kb = optional second collection (e.g. full corpus, private notes)
+#
+# Add one entry per file. `collections` controls which Qdrant collection it lands in.
+# `origin` is a free-text tag stored as metadata for filtering at retrieval time.
+# `skip_if_stub: true` — ingest will skip the file if it has fewer than a few lines.
+
+files:
+  - path: data/example/bio.md
+    collections: [public_kb]
+    origin: bio
+
+  - path: data/example/project-example.md
+    collections: [public_kb]
+    origin: portfolio

@@ -1,0 +1,1 @@
+Hi there. Welcome to my page. This is a chat copilot connected to a vector database containing my background, employment history, projects, writing, and ideas. You can ask it anything you'd ask me in an interview. When you're done, there's a button at the top to schedule a conversation directly. Thanks for stopping by.

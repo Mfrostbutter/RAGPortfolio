@@ -1,0 +1,10 @@
+# Cloudflare Pages config.
+#
+# Note: wrangler.toml [vars] are runtime Function bindings and do NOT reach
+# Astro's import.meta.env at build time. If you need build-time env vars
+# (e.g. PostHog, analytics keys), set them in your CI workflow's env block
+# or in the Cloudflare Pages dashboard under Environment variables.
+
+name = "rag-portfolio-site"
+pages_build_output_dir = "dist"
+compatibility_date = "2024-11-12"
