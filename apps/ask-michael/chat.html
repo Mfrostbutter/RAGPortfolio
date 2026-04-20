@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B0E14">
+<title>Ask Me — № 02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600&family=Martian+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* Night edition — inverted ink + paper, vermillion retained */
+    --bg:          #0B0E14;
+    --bg-2:        #121621;
+    --bg-3:        #1A1E2B;
+    --paper:       #F4F1EA;
+    --paper-dim:   #C9C5B8;
+    --paper-mute:  #7A7868;
+    --rule:        rgba(244, 241, 234, 0.12);
+    --rule-hi:     rgba(244, 241, 234, 0.28);
+    --accent:      #E36144;
+    --accent-hi:   #F0795D;
+    --accent-tint: rgba(227, 97, 68, 0.14);
+    --status-live: #22c55e;
+    --danger:      #f87171;
+
+    --font-display: 'Fraunces', 'Tiempos Headline', Georgia, serif;
+    --font-sans:    'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono:    'Martian Mono', 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+
+    /* Legacy aliases so existing JS/class names keep working */
+    --panel: var(--bg-2);
+    --panel-2: var(--bg-3);
+    --border: var(--rule);
+    --accent-soft: var(--accent-tint);
+    --text: var(--paper);
+    --text-muted: var(--paper-mute);
+    --user-bg: transparent;
+    --user-text: var(--paper);
+    --bot-bg: transparent;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--paper);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Subtle paper grain — matches parent site */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.5 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+    opacity: 0.05;
+    mix-blend-mode: screen;
+  }
+
+  /* Signature — rotated № 02 running head, ties to parent site's № 01 dateline */
+  body::after {
+    content: '№ 02';
+    position: fixed;
+    top: 1.5rem;
+    right: 1.75rem;
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 1;
+    font-size: 56px;
+    font-weight: 400;
+    color: var(--accent);
+    opacity: 0.14;
+    transform: rotate(-8deg);
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    z-index: 1;
+  }
+  @media (max-width: 640px) {
+    body::after { font-size: 40px; top: 1rem; right: 1rem; }
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+  body > header, body > main, body > footer { position: relative; z-index: 2; }
+
+  header {
+    padding: 18px clamp(18px, 4vw, 32px);
+    border-bottom: 1px solid var(--rule);
+    background: transparent;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    position: relative;
+    z-index: 5;
+  }
+
+  .title {
+    display: flex;
+    align-items: baseline;
+    gap: 0.625rem;
+    min-width: 0;
+  }
+  .title h1 {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 1;
+    font-style: italic;
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .title .sub {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--paper-mute);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0;
+  }
+
+  /* Editorial cost — running total, no pill, no pulse */
+  .cost-pill {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--paper-mute);
+    cursor: help;
+    user-select: none;
+  }
+  .cost-dot { display: none; }
+  .cost-val { color: var(--paper-dim); font-weight: 500; }
+  .cost-pill::after { content: 'USD · SESSION'; color: var(--paper-mute); margin-left: 4px; letter-spacing: 0.14em; font-size: 0.6rem; }
+  @media (max-width: 480px) {
+    .cost-pill::after { display: none; }
+    .cost-pill { font-size: 0.6rem; }
+  }
+
+  /* Icon buttons — chromeless, vermillion-on-active, visible indicator */
+  .icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--paper-mute);
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+    cursor: pointer;
+    transition: color 180ms ease;
+    position: relative;
+    padding: 0;
+  }
+  .icon-btn:hover { color: var(--paper); }
+  .icon-btn.active { color: var(--accent); background: transparent; }
+  .icon-btn.active::after {
+    content: '';
+    position: absolute;
+    left: 50%; bottom: -4px;
+    transform: translateX(-50%);
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 2px rgba(227, 97, 68, 0.25);
+  }
+  .icon-btn svg { width: 18px; height: 18px; }
+
+  .voice-dot { display: none; }
+
+  .book-btn {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    white-space: nowrap;
+  }
+  .book-btn:hover {
+    background: var(--accent-soft);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.08);
+  }
+  .book-btn.disabled {
+    opacity: 0.55;
+    cursor: help;
+  }
+
+  /* Clear — text-link, mono caps */
+  .clear-btn {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--rule-hi);
+    color: var(--paper-mute);
+    padding: 2px 0 3px;
+    border-radius: 0;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 180ms ease, border-color 180ms ease;
+  }
+  .clear-btn:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  main {
+    flex: 1;
+    overflow-y: auto;
+    padding: clamp(1.5rem, 4vw, 2.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    max-width: 820px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .msg {
+    max-width: 100%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    position: relative;
+  }
+
+  /* Bot — published dispatch, signed M.F., single vermillion hanging rule */
+  .msg.bot {
+    align-self: flex-start;
+    max-width: 62ch;
+    padding: 0 0 0 1.25rem;
+    border-left: 1px solid var(--accent);
+    background: none;
+    border-radius: 0;
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 18;
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--paper);
+  }
+  .msg.bot::before {
+    content: 'M.F.';
+    display: block;
+    font-family: var(--font-mono);
+    font-variation-settings: normal;
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    margin-bottom: 0.625rem;
+    text-transform: uppercase;
+  }
+
+  /* User — marginalia, right-aligned, short hairline-underlined */
+  .msg.user {
+    align-self: flex-end;
+    background: none;
+    color: var(--paper-dim);
+    border: none;
+    border-bottom: 1px solid var(--rule-hi);
+    border-radius: 0;
+    padding: 0 0 6px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    max-width: 44ch;
+    text-align: right;
+  }
+  .msg.user::after {
+    content: ' —';
+    color: var(--paper-mute);
+    margin-left: 4px;
+  }
+
+  .bot-audio-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 14px;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper-mute);
+  }
+  .bot-audio-controls button {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--rule-hi);
+    color: var(--paper-mute);
+    border-radius: 0;
+    padding: 2px 0 3px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 180ms ease, border-color 180ms ease;
+  }
+  .bot-audio-controls button svg { display: none; }
+  .bot-audio-controls button::before { content: '↺ '; font-family: var(--font-mono); }
+  .bot-audio-controls button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .wave {
+    display: inline-flex;
+    gap: 2px;
+    align-items: flex-end;
+    height: 12px;
+  }
+  .wave span {
+    display: block;
+    width: 2px;
+    background: var(--accent);
+    border-radius: 1px;
+    animation: wave 0.9s infinite ease-in-out;
+  }
+  .wave span:nth-child(1) { height: 40%; animation-delay: 0s; }
+  .wave span:nth-child(2) { height: 80%; animation-delay: 0.1s; }
+  .wave span:nth-child(3) { height: 55%; animation-delay: 0.2s; }
+  .wave span:nth-child(4) { height: 95%; animation-delay: 0.3s; }
+  .wave span:nth-child(5) { height: 60%; animation-delay: 0.15s; }
+  @keyframes wave {
+    0%, 100% { transform: scaleY(0.5); }
+    50% { transform: scaleY(1.2); }
+  }
+
+  .typing {
+    align-self: flex-start;
+    background: transparent;
+    border: none;
+    border-left: 1px solid var(--accent);
+    padding: 0.25rem 0 0.5rem 1.25rem;
+    border-radius: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 2rem;
+  }
+  .typing span {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.4;
+    animation: bounce 1.2s infinite ease-in-out;
+  }
+  .typing span:nth-child(2) { animation-delay: 0.15s; }
+  .typing span:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-5px); opacity: 1; }
+  }
+
+  footer {
+    border-top: 1px solid var(--rule-hi);
+    padding: 1.25rem clamp(1.25rem, 4vw, 2rem) 1.5rem;
+    background: transparent;
+    position: relative;
+    z-index: 5;
+  }
+
+  .input-row {
+    max-width: 820px;
+    margin: 0 auto;
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+  }
+
+  /* Hairline typographic input — no card chrome */
+  textarea {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--paper);
+    padding: 0.5rem 0;
+    border-radius: 0;
+    resize: none;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.45;
+    min-height: 40px;
+    max-height: 140px;
+    outline: none;
+    caret-color: var(--accent);
+  }
+  textarea:focus { outline: none; }
+  textarea::placeholder {
+    color: var(--paper-mute);
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 24;
+    font-style: italic;
+    font-size: 17px;
+  }
+
+  /* Mic — icon only, no chrome */
+  .mic-btn {
+    background: transparent;
+    border: none;
+    color: var(--paper-mute);
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+    cursor: pointer;
+    transition: color 180ms ease;
+    flex-shrink: 0;
+    padding: 0;
+  }
+  .mic-btn:hover { color: var(--paper); }
+  .mic-btn svg { width: 18px; height: 18px; }
+  .mic-btn.listening {
+    color: var(--accent);
+    animation: mic-pulse 1.2s infinite ease-in-out;
+  }
+  @keyframes mic-pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.55; }
+  }
+
+  /* Send — hairline editorial submit, not a filled button */
+  .send-btn {
+    background: transparent;
+    color: var(--accent);
+    border: none;
+    border-bottom: 1px solid var(--accent);
+    padding: 0.45rem 0 0.5rem;
+    height: auto;
+    border-radius: 0;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 180ms ease, border-color 180ms ease, gap 180ms ease;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .send-btn::after { content: '↵'; font-size: 1em; transition: transform 220ms ease; }
+  .send-btn:hover:not(:disabled) { color: var(--accent-hi); border-color: var(--accent-hi); gap: 11px; }
+  .send-btn:hover:not(:disabled)::after { transform: translateX(2px); }
+  .send-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .tooltip-pop {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    right: 0;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+    z-index: 10;
+  }
+  .tooltip-pop.show { opacity: 1; }
+
+  /* Landing overlay removed — parent site owns the entry gate */
+  .landing-overlay { display: none !important; }
+
+  .landing-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+    max-width: 440px;
+    width: 100%;
+  }
+
+  .landing-divider {
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.55) 50%, transparent 100%);
+    margin: 2px 0;
+  }
+
+  .landing-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.22);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), 0 0 0 6px rgba(56, 189, 248, 0.1);
+    background: var(--panel-2);
+  }
+
+  .landing-role {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-top: -6px;
+  }
+
+  .landing-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .landing-link {
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: opacity 0.15s;
+  }
+  .landing-link:hover { opacity: 0.75; }
+  .landing-link-sep { color: var(--text-muted); font-size: 11px; }
+
+  .landing-title {
+    font-size: 38px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.5px;
+    line-height: 1.05;
+    margin-top: 4px;
+  }
+
+  .landing-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    letter-spacing: 0.2px;
+    max-width: 340px;
+    line-height: 1.5;
+  }
+
+  .landing-cta {
+    margin-top: 6px;
+    background: var(--accent);
+    color: var(--user-text);
+    border: none;
+    padding: 14px 44px;
+    border-radius: 999px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    box-shadow: 0 6px 24px rgba(56, 189, 248, 0.35);
+    transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+    animation: cta-pulse 2.4s infinite ease-in-out;
+    min-width: 180px;
+  }
+  .landing-cta:hover {
+    filter: brightness(1.08);
+    box-shadow: 0 8px 32px rgba(56, 189, 248, 0.6), 0 0 0 6px rgba(56, 189, 248, 0.12);
+    transform: translateY(-1px);
+  }
+  .landing-cta:active { transform: translateY(0); }
+  .landing-cta:disabled {
+    cursor: default;
+    animation: none;
+    opacity: 0.85;
+  }
+  @keyframes cta-pulse {
+    0%, 100% { box-shadow: 0 6px 24px rgba(56, 189, 248, 0.35), 0 0 0 0 rgba(56, 189, 248, 0.45); }
+    50%      { box-shadow: 0 6px 24px rgba(56, 189, 248, 0.35), 0 0 0 12px rgba(56, 189, 248, 0); }
+  }
+
+  .landing-foot {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+
+  @media (max-width: 640px) {
+    .landing-title { font-size: 34px; }
+    .landing-avatar { width: 96px; height: 96px; }
+  }
+
+  @media (max-width: 640px) {
+    header { padding: 12px 14px; }
+    .title h1 { font-size: 16px; }
+    .title .sub { font-size: 11px; }
+    main { padding: 16px; }
+    .msg { max-width: 92%; font-size: 14px; }
+    footer { padding: 10px 12px; }
+    .book-btn { padding: 7px 10px; font-size: 12px; }
+    .clear-btn { display: none; }
+    .header-avatar { display: none; }
+  }
+
+  /* Header avatar */
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+  }
+  .header-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+  }
+  .status-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #34d399;
+    box-shadow: 0 0 5px rgba(52, 211, 153, 0.55);
+    margin-right: 5px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+
+  /* Suggestions — inline section-marker stamps, § prefix, hairline rules, mono caps */
+  .suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 2rem;
+    align-self: flex-start;
+    max-width: 100%;
+    margin-top: 0.5rem;
+  }
+  .suggestions-label {
+    width: 100%;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--paper-mute);
+    margin-bottom: 0.375rem;
+    padding-bottom: 0.375rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .suggestion-chip {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--rule);
+    color: var(--paper-dim);
+    padding: 10px 0;
+    border-radius: 0;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 180ms ease, border-color 180ms ease;
+    line-height: 1.2;
+    text-align: left;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .suggestion-chip::before {
+    content: '§';
+    color: var(--paper-mute);
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 18;
+    font-size: 0.9em;
+  }
+  .suggestion-chip:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: transparent;
+  }
+  .suggestion-chip:hover::before { color: var(--accent); }
+  @media (max-height: 560px) {
+    .suggestions { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="title">
+    <h1>Ask Me</h1>
+    <div class="sub">№ 02 · Portfolio · MMXXVI</div>
+  </div>
+  <div class="header-actions">
+    <div class="cost-pill" id="costPill" title="Live API spend on this conversation. Most candidates send a PDF.">
+      <span class="cost-dot"></span>
+      <span class="cost-val" id="costVal">$0.0000</span>
+    </div>
+    <button class="icon-btn" id="stopBtn" title="Stop audio" aria-label="Stop audio" style="display:none">
+      <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+    </button>
+    <button class="icon-btn" id="voiceBtn" title="Toggle voice replies" aria-label="Toggle voice replies">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+      <span class="voice-dot"></span>
+    </button>
+    <div style="position: relative;">
+      <div class="tooltip-pop" id="bookTooltip">Reach out on LinkedIn to connect</div>
+    </div>
+    <button class="clear-btn" id="clearBtn" title="Start a new conversation">Clear</button>
+  </div>
+</header>
+
+<main id="messages"></main>
+
+<footer>
+  <div class="input-row">
+    <textarea id="input" placeholder="Ask about his background, projects, or leadership..." rows="1"></textarea>
+    <button class="mic-btn" id="micBtn" title="Speak your question" aria-label="Speak your question" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+    </button>
+    <button class="send-btn" id="sendBtn">Send</button>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const messagesEl = document.getElementById("messages");
+  const input = document.getElementById("input");
+  const sendBtn = document.getElementById("sendBtn");
+  const clearBtn = document.getElementById("clearBtn");
+  const voiceBtn = document.getElementById("voiceBtn");
+  const stopBtn = document.getElementById("stopBtn");
+  const bookTooltip = document.getElementById("bookTooltip");
+  const micBtn = document.getElementById("micBtn");
+
+  const SESSION_KEY = "ask_michael_session_id";
+  const VOICE_KEY = "ask_michael_voice_mode";
+  let sessionId = localStorage.getItem(SESSION_KEY);
+  if (!sessionId) {
+    sessionId = (crypto.randomUUID && crypto.randomUUID()) || (Date.now() + "-" + Math.random().toString(36).slice(2));
+    localStorage.setItem(SESSION_KEY, sessionId);
+  }
+
+  // Voice mode defaults ON for new visitors; users who explicitly toggled it off keep that choice.
+  let voiceMode = sessionStorage.getItem(VOICE_KEY) !== "0";
+  let calendarUrl = null;
+  let voiceEnabled = false;
+  let lastAudioB64 = null;
+  let currentAudio = null;
+
+  function applyVoiceUi() {
+    voiceBtn.classList.toggle("active", voiceMode && voiceEnabled);
+    voiceBtn.title = voiceEnabled
+      ? (voiceMode ? "Voice replies ON" : "Voice replies OFF")
+      : "Voice replies not configured";
+  }
+
+  function stripMarkdown(text) {
+    return text
+      .replace(/\*\*(.+?)\*\*/g, "$1")
+      .replace(/^#{1,6}\s+/gm, "");
+  }
+
+  function addMessage(role, text, opts = {}) {
+    const div = document.createElement("div");
+    div.className = "msg " + role;
+    div.textContent = stripMarkdown(text);
+    messagesEl.appendChild(div);
+
+    if (role === "bot" && opts.audioB64) {
+      lastAudioB64 = opts.audioB64;
+      const controls = document.createElement("div");
+      controls.className = "bot-audio-controls";
+      const wave = document.createElement("span");
+      wave.className = "wave";
+      wave.innerHTML = "<span></span><span></span><span></span><span></span><span></span>";
+      wave.style.display = "none";
+
+      const replay = document.createElement("button");
+      replay.type = "button";
+      replay.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Replay';
+      replay.addEventListener("click", () => {
+        playAudio(opts.audioB64, wave);
+      });
+
+      controls.appendChild(wave);
+      controls.appendChild(replay);
+      div.appendChild(document.createElement("br"));
+      div.appendChild(controls);
+
+      playAudio(opts.audioB64, wave);
+    }
+
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    return div;
+  }
+
+  function stopAllAudio() {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+      currentAudio = null;
+    }
+    stopBtn.style.display = "none";
+    // Hide all waveforms
+    document.querySelectorAll(".wave").forEach(w => w.style.display = "none");
+  }
+
+  function b64ToBlobUrl(b64, mime) {
+    const bytes = atob(b64);
+    const len = bytes.length;
+    const buf = new Uint8Array(len);
+    for (let i = 0; i < len; i++) buf[i] = bytes.charCodeAt(i);
+    return URL.createObjectURL(new Blob([buf], { type: mime }));
+  }
+
+  function playAudio(b64, waveEl) {
+    try {
+      stopAllAudio();
+      const url = b64ToBlobUrl(b64, "audio/mpeg");
+      const audio = new Audio(url);
+      currentAudio = audio;
+      window.__lastAudio = audio; // diagnostic handle: inspect with window.__lastAudio
+      stopBtn.style.display = "inline-flex";
+      if (waveEl) waveEl.style.display = "inline-flex";
+      const cleanup = () => {
+        if (waveEl) waveEl.style.display = "none";
+        URL.revokeObjectURL(url);
+        if (currentAudio === audio) {
+          currentAudio = null;
+          stopBtn.style.display = "none";
+        }
+      };
+      audio.addEventListener("ended", () => { console.log("[audio] ended"); cleanup(); });
+      audio.addEventListener("error", (e) => {
+        console.error("[audio] playback error", e, audio.error);
+        cleanup();
+      });
+      audio.addEventListener("playing", () => console.log("[audio] playing, duration=" + audio.duration + "s, volume=" + audio.volume + ", muted=" + audio.muted));
+      audio.play()
+        .then(() => console.log("[audio] play() resolved"))
+        .catch((err) => {
+          console.error("[audio] play() rejected:", err.name, err.message);
+          cleanup();
+        });
+    } catch (e) {
+      console.error("[audio] playAudio threw:", e);
+    }
+  }
+
+  function showTyping() {
+    const div = document.createElement("div");
+    div.className = "typing";
+    div.id = "typing";
+    div.innerHTML = "<span></span><span></span><span></span>";
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+  function hideTyping() {
+    const t = document.getElementById("typing");
+    if (t) t.remove();
+  }
+
+  const WELCOME_TEXT = "Hi there, I'm Michael. Welcome to my page. If you've landed here, my guess is you're looking to hire someone to run AI for your company. Well, you're in the right place. So let me tell you a little bit about how this works. This is a chat copilot connected to a vector database that contains my story, my employment background, my thoughts and ideas, articles I've authored, even my hobbies. You can ask it anything. You could even ask it why you should hire me. So play around. I hope you enjoy the experience. And when you're finished, there's a button up top where you can schedule an interview with me directly. Thank you and enjoy.";
+
+  function injectSuggestions() {
+    const prompts = [
+      "Tell me about this page",
+      "Tell me about a time you had to convince a skeptic",
+      "Walk me through your most ambitious build",
+      "How do you approach AI security",
+      "What's your management philosophy",
+      "What kind of role are you looking for next",
+    ];
+    const div = document.createElement("div");
+    div.className = "suggestions";
+    div.id = "suggestion-chips";
+    const label = document.createElement("div");
+    label.className = "suggestions-label";
+    label.textContent = "Try one of these";
+    div.appendChild(label);
+    prompts.forEach(q => {
+      const btn = document.createElement("button");
+      btn.className = "suggestion-chip";
+      btn.type = "button";
+      btn.textContent = q;
+      btn.addEventListener("click", () => {
+        div.remove();
+        input.value = q;
+        sendMessage();
+      });
+      div.appendChild(btn);
+    });
+    messagesEl.appendChild(div);
+  }
+
+  function updateCost(usd) {
+    const el = document.getElementById("costVal");
+    if (!el) return;
+    // Show 4 decimals always; conversations stay sub-cent for a while.
+    el.textContent = "$" + Number(usd).toFixed(4);
+  }
+
+  function welcome() {
+    // Called from clearSession only (not on initial load — startChat handles that)
+    addMessage("bot", WELCOME_TEXT);
+    injectSuggestions();
+  }
+
+  function autoResize() {
+    input.style.height = "auto";
+    input.style.height = Math.min(input.scrollHeight, 140) + "px";
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+    addMessage("user", text);
+    input.value = "";
+    autoResize();
+    sendBtn.disabled = true;
+    showTyping();
+
+    const useVoice = voiceMode && voiceEnabled;
+    const endpoint = useVoice ? "/chat/voice" : "/chat";
+    const body = { message: text, session_id: sessionId };
+    if (useVoice) body.voice_mode = true;
+
+    try {
+      const resp = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await resp.json();
+      hideTyping();
+      if (data.reply) {
+        addMessage("bot", data.reply, { audioB64: data.audio || null });
+        if (typeof data.session_cost_usd === "number") updateCost(data.session_cost_usd);
+      } else if (data.error) {
+        addMessage("bot", "Error: " + data.error);
+      } else {
+        addMessage("bot", "Something went wrong.");
+      }
+    } catch (err) {
+      hideTyping();
+      addMessage("bot", "Network error: " + err.message);
+    } finally {
+      sendBtn.disabled = false;
+      input.focus();
+    }
+  }
+
+  async function clearSession() {
+    try {
+      await fetch("/clear", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ session_id: sessionId }),
+      });
+    } catch (e) { /* ignore */ }
+    sessionId = crypto.randomUUID();
+    localStorage.setItem(SESSION_KEY, sessionId);
+    messagesEl.innerHTML = "";
+    updateCost(0);
+    welcome();
+  }
+
+  // Stop button
+  stopBtn.addEventListener("click", stopAllAudio);
+
+  // Voice toggle
+  voiceBtn.addEventListener("click", () => {
+    if (!voiceEnabled) {
+      voiceMode = false;
+      return;
+    }
+    voiceMode = !voiceMode;
+    sessionStorage.setItem(VOICE_KEY, voiceMode ? "1" : "0");
+    if (!voiceMode) stopAllAudio();
+    applyVoiceUi();
+  });
+
+
+  // STT with Web Speech API
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (SpeechRecognition) {
+    micBtn.style.display = "inline-flex";
+    let recognition = null;
+    let listening = false;
+
+    micBtn.addEventListener("click", () => {
+      if (listening) {
+        if (recognition) recognition.stop();
+        return;
+      }
+      recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+      recognition.continuous = false;
+
+      recognition.addEventListener("start", () => {
+        listening = true;
+        micBtn.classList.add("listening");
+      });
+      recognition.addEventListener("result", (e) => {
+        const transcript = e.results[0][0].transcript;
+        input.value = transcript;
+        autoResize();
+      });
+      recognition.addEventListener("end", () => {
+        listening = false;
+        micBtn.classList.remove("listening");
+        if (input.value.trim()) {
+          sendMessage();
+        }
+      });
+      recognition.addEventListener("error", () => {
+        listening = false;
+        micBtn.classList.remove("listening");
+      });
+      try { recognition.start(); } catch (e) { /* ignore */ }
+    });
+  }
+
+  input.addEventListener("input", autoResize);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+  sendBtn.addEventListener("click", sendMessage);
+  clearBtn.addEventListener("click", clearSession);
+
+  window.addEventListener("message", (e) => {
+    if (e.data && e.data.type === "inject-question" && e.data.text) {
+      input.value = e.data.text;
+      sendMessage();
+    }
+  });
+
+  // Load config then mount the welcome dispatch. Landing overlay removed — parent site owns entry.
+  (async () => {
+    try {
+      const r = await fetch("/config");
+      const cfg = await r.json();
+      calendarUrl = cfg.calendar_url || null;
+      voiceEnabled = !!cfg.voice_enabled;
+      if (!voiceEnabled) voiceMode = false;
+      applyVoiceUi();
+    } catch (e) { /* ignore */ }
+
+    addMessage("bot", WELCOME_TEXT);
+    injectSuggestions();
+    input.focus();
+  })();
+})();
+</script>
+
+<!-- Cloudflare Web Analytics removed — was throwing ERR_CONNECTION_REFUSED locally -->
+</body>
+</html>

@@ -1,0 +1,13 @@
+.env
+__pycache__/
+*.pyc
+*.db
+*.sqlite
+static/welcome*.mp3
+static/welcome*.wav
+static/welcome*.pkf
+static/headshot.*
+data/knowledge/
+data/founder-profile/
+*.log
+.DS_Store
