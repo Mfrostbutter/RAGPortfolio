@@ -69,6 +69,7 @@ Open `http://localhost:4321`.
 - [`apps/rag-chat/TECHNICAL-BUILD-DOC.md`](apps/rag-chat/TECHNICAL-BUILD-DOC.md) — architecture, design decisions, runbook
 - [`apps/rag-chat/data/README.md`](apps/rag-chat/data/README.md) — how to write content for a RAG chat
 - [`apps/rag-chat/data/SOURCE-IDEAS.md`](apps/rag-chat/data/SOURCE-IDEAS.md) — curated list of knowledge sources (AI chat exports, meeting transcripts, voice memos, drafts) to capture how you actually communicate
+- [`apps/rag-chat/data/PROCESSING-PROMPTS.md`](apps/rag-chat/data/PROCESSING-PROMPTS.md) — ready-to-paste agent prompts for distilling each source type into ingest-ready markdown
 - [`apps/site/README.md`](apps/site/README.md) — site config, build, deploy
 
 ## License

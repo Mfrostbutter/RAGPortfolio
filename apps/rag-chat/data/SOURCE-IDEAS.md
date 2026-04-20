@@ -132,6 +132,8 @@ The ones people don't think of, that often carry the most character.
 
 ---
 
+> **Ready-to-paste prompts for every source type below live in [`PROCESSING-PROMPTS.md`](PROCESSING-PROMPTS.md)** — distillation, voice-pattern extraction, redaction, and consolidation, one prompt per job. Use them with Claude Code, Claude.ai, ChatGPT, or any API script.
+
 ## How to process raw sources
 
 Don't dump raw into Qdrant. Most of these need a curation pass:

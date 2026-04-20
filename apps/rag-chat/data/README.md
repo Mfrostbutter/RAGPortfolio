@@ -47,3 +47,7 @@ Frontmatter is parsed and stored as chunk metadata. You can filter on it at retr
 ## Where to find content to ingest
 
 See [`SOURCE-IDEAS.md`](SOURCE-IDEAS.md) for a curated list of knowledge sources — ChatGPT / Claude exports, meeting transcripts, voice memos, draft essays, and unfiltered text streams that capture how you actually communicate. The bot is only as good as the corpus behind it.
+
+## How to process those sources
+
+Raw sources don't ingest well. Meeting transcripts are too long, chat exports are too messy, drafts are too unfinished. See [`PROCESSING-PROMPTS.md`](PROCESSING-PROMPTS.md) for ready-to-paste agent prompts that turn each source type into ingest-ready markdown — distillation, voice-pattern extraction, redaction, consolidation. One prompt per job. Works with Claude Code, Claude.ai, ChatGPT, or API scripts.
